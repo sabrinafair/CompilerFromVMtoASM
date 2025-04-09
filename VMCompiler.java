@@ -8,7 +8,9 @@ import java.util.Scanner;
 
 import VMCompliler.HelperFunctions;
 
-
+//Author: Sabrina Ferras
+//Description: open folders that hold .vm code, line by line convert to .asm
+//Date: 4.8.2025
 
 public class VMCompiler {
 	
@@ -20,26 +22,19 @@ public class VMCompiler {
 		    }
 		};
 		HelperFunctions functions = new HelperFunctions();
-//        Scanner scanner = new Scanner(System.in);
-//		System.out.print("Enter file path: ");
-//        String path = scanner.nextLine();
-//		System.out.print("Enter file name: ");
-//        String name = scanner.nextLine();
-
-//        String inputFile = "C:\\Users\\Sabrina Ferras\\OneDrive - csumb.edu\\Documents\\CPP\\Spring2025\\CS 5250 - Adv Comp Architecture\\software\\nand2tetris\\nand2tetris\\projects\\7\\StackArithmetic\\StackTest\\StackTest.vm";
-       // inputFile = "C:\\Users\\Sabrina Ferras\\OneDrive - csumb.edu\\Documents\\CPP\\Spring2025\\CS 5250 - Adv Comp Architecture\\software\\nand2tetris\\nand2tetris\\projects\\8\\FunctionCalls\\StaticsTest\\Sys.vm";
-//        String inputFile = path + "\\" + name + ".vm";
-//        String outputFile = path + "\\" + name + "1.hack";
-//        for(int i = 0; i < 2; i++) {
+        Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter folder path: ");
+        String path = scanner.nextLine();
         
-        File folder = new File("C:\\Users\\Sabrina Ferras\\OneDrive - csumb.edu\\Documents\\CPP\\Spring2025\\CS 5250 - Adv Comp Architecture\\software\\nand2tetris\\nand2tetris\\projects\\7\\MemoryAccess\\StaticTest");
+//      File folder = new File("C:\\Users\\Sabrina Ferras\\OneDrive - csumb.edu\\Documents\\CPP\\Spring2025\\CS 5250 - Adv Comp Architecture\\software\\nand2tetris\\nand2tetris\\projects\\7\\MemoryAccess\\StaticTest");
+        File folder = new File(path);
         File[] listOfFiles = folder.listFiles(filter);
         
         for (int i = 0; i < listOfFiles.length; i++) {
 	    try {
-//	        File myObj = new File(inputFile); 
 	    	File myObj = listOfFiles[i];
-	        PrintStream fileStream = new PrintStream(new File("C:\\Users\\Sabrina Ferras\\OneDrive - csumb.edu\\Documents\\CPP\\Spring2025\\CS 5250 - Adv Comp Architecture\\software\\nand2tetris\\nand2tetris\\projects\\7\\MemoryAccess\\StaticTest\\TEST.asm"));
+//	        PrintStream fileStream = new PrintStream(new File("C:\\Users\\Sabrina Ferras\\OneDrive - csumb.edu\\Documents\\CPP\\Spring2025\\CS 5250 - Adv Comp Architecture\\software\\nand2tetris\\nand2tetris\\projects\\7\\MemoryAccess\\StaticTest\\TEST.asm"));
+	        PrintStream fileStream = new PrintStream(new File(path + "\\TEST.asm"));
 	        
 	        Scanner myReader = new Scanner(myObj);
 	        functions.init();
@@ -55,9 +50,7 @@ public class VMCompiler {
 
 	          System.out.println(line);
 	          System.out.println(functions.stack.toString());
-//	          if(!functions.isLabel && !functions.firstPass) System.out.print(functions.arrToString(functions.machineCode) + System.lineSeparator());
-//	          if(!functions.isLabel && !functions.firstPass) fileStream.println(functions.arrToString(functions.machineCode));
-	  		  }
+	          }
 	        }
 	        myReader.close();
 	      } catch (IOException e) {
@@ -65,13 +58,10 @@ public class VMCompiler {
 	        e.printStackTrace();
 	      }
         }
-//	    functions.firstPass = false;
 	    System.out.print("Final stack:");
 	    System.out.println(functions.stack.toString());
 
 	    System.out.print("Final sp:");
 	    System.out.println(functions.sp);
         }
-//	}
-
 }
