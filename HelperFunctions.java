@@ -60,8 +60,19 @@ public class HelperFunctions {
 				fileStream.println("D=M");
 				fileStream.println("@" + number);
 				fileStream.println("D=A+D");
-				fileStream.println("@SP");
+				fileStream.println("@" + this.sp);
 				fileStream.println("M=D");
+			}else if(words[1].equals("static")) {
+				int temp = this.staticStart + number;
+				fileStream.println("@" + temp);
+				fileStream.println("D=M");
+//				System.out.print("static start:" + temp);
+				fileStream.println("@" + this.sp);
+//				this.staticStart++;
+				fileStream.println("M=D");
+//				this.setConstantAtSP(number, fileStream);
+				stack.push(number);
+				this.incrementSP(fileStream);
 			}else{
 				pushToKnownRegisters(savedRegs.get(words[1]), number, fileStream);
 			}
@@ -77,12 +88,13 @@ public class HelperFunctions {
 			    System.out.println("Invalid string for conversion to integer");
 			    e.printStackTrace();
 			}
-			if(words[0].equals("static")) {
+			if(words[1].equals("static")) {
 				int temp = this.staticStart + number;
-				fileStream.println("@SP");
+//				System.out.print("static start:" + temp);
+				fileStream.println("@" + (this.sp - 1));
 				fileStream.println("D=M");
 				fileStream.println("@" + temp);
-				this.staticStart++;
+//				this.staticStart++;
 				fileStream.println("M=D");
 			}
 			stack.pop();
@@ -117,11 +129,11 @@ public class HelperFunctions {
 
 			
 			fileStream.println(funtionName + ":");
-			fileStream.println("@SP");
+			fileStream.println("@" + this.sp);
 			fileStream.println("M=M-" + arg);
 			
 		}else if(words[0].equals("if-goto")){
-			fileStream.println("@SP");
+			fileStream.println("@" + this.sp);
 			fileStream.println("D=M");
 			fileStream.println("D;JNE");
 		}else if(words[0].equals("goto")){
@@ -145,13 +157,13 @@ public class HelperFunctions {
 
 			int y = stack.pop();
 			this.decrementSP(fileStream);
-			fileStream.println("@SP");
+			fileStream.println("@" + this.sp);
 			fileStream.println("D=M");
 
 			int x = stack.pop();
 
 			this.decrementSP(fileStream);
-			fileStream.println("@SP");
+			fileStream.println("@" + this.sp);
 			
 
 			switch (opp) {
@@ -222,7 +234,7 @@ public class HelperFunctions {
 		fileStream.println("@" + number);
 		fileStream.println("A=D+A");
 		fileStream.println("D=M");
-		fileStream.println("@SP");
+		fileStream.println("@" + this.sp);
 		fileStream.println("M=D");
 		decrementSP(fileStream);
 		fileStream.println("A=M");
@@ -232,19 +244,19 @@ public class HelperFunctions {
 		fileStream.println("M=D");
 	}
 	private void decrementSP(PrintStream fileStream) {
-		fileStream.println("@SP");
-		fileStream.println("M=M+1");
+//		fileStream.println("@" + this.sp);
+//		fileStream.println("M=M+1");
 		this.sp--;
 	}
 	
 	private void incrementSP(PrintStream fileStream) {
-		fileStream.println("@SP");
-		fileStream.println("M=M-1");
+//		fileStream.println("@" + this.sp);
+//		fileStream.println("M=M-1");
 		this.sp++;
 	}
 	private void jumpCommand(PrintStream fileStream) {
 		fileStream.println("D=M-D");
-		fileStream.println("@SP");
+		fileStream.println("@" + this.sp);
 		fileStream.println("M=D");
 	}
 	
@@ -253,7 +265,7 @@ public class HelperFunctions {
 		if(number < 0) {number = number * (-1); isNeg = true; }
 		fileStream.println("@" + number);
 		fileStream.println("D=A");
-		fileStream.println("@SP");
+		fileStream.println("@" + this.sp);
 		fileStream.println("M=D");
 		if(isNeg) this.setValueNeg(fileStream);
 	}
